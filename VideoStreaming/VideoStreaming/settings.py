@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
+from rest_framework.settings import api_settings
+from datetime import timedelta
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -37,6 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'knox',
+    'UsersAcc.apps.UsersaccConfig',
+    'rest_apis.apps.RestApisConfig',
 ]
 
 MIDDLEWARE = [
@@ -80,6 +86,22 @@ DATABASES = {
     }
 }
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'knox.auth.TokenAuthentication',
+    ],
+}
+
+REST_KNOX = {
+    'SECURE_HASH_ALGORITHM': 'cryptography.hazmat.primitives.hashes.SHA512',
+    'AUTH_TOKEN_CHARACTER_LENGTH': 64,
+    'TOKEN_TTL': timedelta(days=41, hours=10),
+    'USER_SERIALIZER': 'knox.serializers.UserSerializer',
+    'TOKEN_LIMIT_PER_USER': None,
+    'AUTO_REFRESH': False,
+    # 'EXPIRY_DATETIME_FORMAT': api_settings.DATETME_FORMAT,
+}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -118,3 +140,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+AUTH_USER_MODEL = 'UsersAcc.UserAcc'
