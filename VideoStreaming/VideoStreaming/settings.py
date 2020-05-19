@@ -25,9 +25,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '$5q5d=w_rv^&p32$n4a5cf)ywsl%w0663*^f6#pdf0#xb($0e='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = int(os.environ.get('DEBUG', default=1))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'knox',
     'UsersAcc.apps.UsersaccConfig',
     'rest_apis.apps.RestApisConfig',
+    'Channels.apps.ChannelsConfig',
+    'Videos.apps.VideosConfig'
 ]
 
 MIDDLEWARE = [
@@ -96,7 +98,8 @@ REST_KNOX = {
     'SECURE_HASH_ALGORITHM': 'cryptography.hazmat.primitives.hashes.SHA512',
     'AUTH_TOKEN_CHARACTER_LENGTH': 64,
     'TOKEN_TTL': timedelta(days=41, hours=10),
-    'USER_SERIALIZER': 'knox.serializers.UserSerializer',
+    # 'USER_SERIALIZER': 'knox.serializers.UserSerializer',
+    'USER_SERIALIZER': 'UsersAcc.serializers.UserSerializer',
     'TOKEN_LIMIT_PER_USER': None,
     'AUTO_REFRESH': False,
     # 'EXPIRY_DATETIME_FORMAT': api_settings.DATETME_FORMAT,
@@ -140,5 +143,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 AUTH_USER_MODEL = 'UsersAcc.UserAcc'
+
+MIN_PASSWORD_LENGTH = 5

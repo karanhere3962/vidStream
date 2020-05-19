@@ -7,7 +7,8 @@ from django.conf.urls import url, include
 
 urlpatterns = [
     # url(r"user", UserView.as_view(), name = "user"),
-    path(r"user/", include("UsersAcc.urls"))
+    path("", include("UsersAcc.urls")),
+    path("", include("Channels.urls"))
 ]
 
-urlpatterns = format_suffix_patterns(urlpatterns)
+# urlpatterns = format_suffix_patterns(urlpatterns)
