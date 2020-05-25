@@ -3,7 +3,7 @@ version: '3.7'
 services:
     web:
         build: ./VideoStreaming
-        command: gunicorn VideoStreaming.wsgi:application --bind 0.0.0.0:8000
+        # command: gunicorn VideoStreaming.wsgi:application --bind 0.0.0.0:8000
         volumes:
             - ./VideoStreaming/:/usr/src/app/
         ports:
