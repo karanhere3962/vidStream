@@ -9,7 +9,7 @@ class VideoSerializer(serializers.ModelSerializer):
     likeDislikeStatus = serializers.SerializerMethodField('likeDislikeField')
     likes = serializers.ReadOnlyField(source="likes_count")
     dislikes = serializers.ReadOnlyField(source="dislikes_count")
-    video_id = serializers.CharField(min_length = 1, required=False)
+    video_id = serializers.CharField(min_length=1, required=False)
 
     class Meta:
         model = Video
