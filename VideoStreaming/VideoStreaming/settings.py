@@ -150,3 +150,103 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 AUTH_USER_MODEL = 'UsersAcc.UserAcc'
 
 MIN_PASSWORD_LENGTH = 5
+
+SUPPORTED_VIDEO_FORMATS = ['.mp4', '.mov']
+
+
+logName = "server_logs"
+logDir = os.path.join(BASE_DIR, "ServerLogs")
+
+apps_logging_path = os.path.join(logDir, f"AppLogs/{logName}")
+middleware_logging_path = os.path.join(logDir, f"MiddlewareLogs/{logName}")
+background_task_logging_path = os.path.join(
+    logDir, f"BackgroundTaskLogs/{logName}")
+
+os.makedirs(os.path.dirname(apps_logging_path), exist_ok=True)
+os.makedirs(os.path.dirname(middleware_logging_path), exist_ok=True)
+os.makedirs(os.path.dirname(background_task_logging_path), exist_ok=True)
+
+apps_logger_level = "DEBUG"
+middleware_logger_level = "DEBUG"
+test_logger_level = "DEBUG"
+console_logger_level = "DEBUG"
+background_task_logger_level = "DEBUG"
+
+max_log_filesize = 1024 * 1024 * 5
+app_logger_backup_count = 45  # keep logs for max 45 days
+middleware_logger_backup_count = 45
+background_task_logger_backup_count = 45
+
+DEFAULT_PROFILE_PIC = '/defaults/profile_pic.png'
+DEFAULT_CHANNEL_DP = 'defaults/channel_dp.jpg'
+DEFAULT_VIDEO_THUMBNAIL = 'defaults/video_thumbnail.png'
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'large': {
+            'format': '%(asctime)s,  %(levelname)s,  %(filename)s,  %(funcName)s,  %(lineno)d : %(message)s'
+        },
+        'tiny': {
+            'format': '%(asctime)s  %(message)s  '
+        }
+    },
+    'handlers': {
+        'app_logger': {
+            'level': apps_logger_level,
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'when': 'midnight',
+            'interval': 1,
+            'filename': apps_logging_path,
+            'formatter': 'large',
+            'backupCount': app_logger_backup_count
+        },
+        'console': {
+            'level': console_logger_level,
+            'class': 'logging.StreamHandler',
+            'formatter': 'large',
+        },
+        'middleware_logger': {
+            'level': middleware_logger_level,
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'when': 'midnight',
+            'interval': 1,
+            'filename': middleware_logging_path,
+            'formatter': 'large',
+            'backupCount': middleware_logger_backup_count
+        },
+        'background_task_logger': {
+            'level': background_task_logger_level,
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'when': 'midnight',
+            'interval': 1,
+            'filename': background_task_logging_path,
+            'formatter': 'large',
+            'backupCount': background_task_logger_backup_count
+        },
+    },
+    'loggers': {
+        'apps_logger': {
+            'handlers': ["app_logger", "console"],
+            'level': apps_logger_level,
+            'propagate': False,
+        },
+        'middleware_logger': {
+            'handlers': ['console', 'middleware_logger'],
+            'level': middleware_logger_level,
+            'propagate': False,
+        },
+        'test_logger': {
+            'handlers': ['console'],
+            'level': test_logger_level,
+            'propagate': False,
+        },
+        'background_task_logger': {
+            'handlers': ['console', 'background_task_logger'],
+            'level': background_task_logger_level,
+            'propagate': False,
+        },
+    },
+}

@@ -81,7 +81,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, name="user")
     profile_pic = models.ImageField(
-        default='/defaults/profile_pic.png', upload_to='profile_pics')
+        default=settings.DEFAULT_PROFILE_PIC, upload_to='profile_pics')
     gender = models.CharField(choices=GENDERS, max_length=5, blank=True)
 
     def __str__(self):

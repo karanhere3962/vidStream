@@ -1,0 +1,19 @@
+server {
+    listen 80;
+    # server_name 3.130.185.148;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /usr/VideoStreaming/static/;
+    }
+
+    location /api/ {
+        include proxy_params;
+        proxy_pass http://unix:run/gunicorn.sock;
+    }
+
+    location / {
+        root /usr/frontend/
+    }
+}
+
