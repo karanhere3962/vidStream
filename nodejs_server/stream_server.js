@@ -8,7 +8,7 @@ var http = require("http"),
 http
   .createServer(function (req, res) {
     // Get params from request.
-    console.log(url.parse(req.url));
+    // console.log(url.parse(req.url));
     var params = url.parse(req.url);
     var filePath = basePath + params.pathname;
     var stat = fs.statSync(filePath);

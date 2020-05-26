@@ -14,7 +14,7 @@ services:
   nginx:
     build: ./nginx_sites
     ports:
-      - 8001:80
+      - 80:80
     depends_on:
       - web
       - nodejs
