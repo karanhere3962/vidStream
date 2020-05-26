@@ -1,21 +1,32 @@
-version: '3.7'
+version: "3.7"
 
 services:
-    web:
-        build: ./VideoStreaming
-        # command: gunicorn VideoStreaming.wsgi:application --bind 0.0.0.0:8000
-        volumes:
-            - ./VideoStreaming/:/usr/src/app/
-        ports:
-            - 8000:8000
-        env_file:
-            - ./.env.dev
+  web:
+    build: ./VideoStreaming
+    # command: gunicorn VideoStreaming.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - ./VideoStreaming/:/usr/src/app/
+    ports:
+      - 8000:8000
+    env_file:
+      - ./.env.dev
 
-    nginx:
-        build: ./nginx_sites
-        ports:
-            - 8001:80
-        depends_on:
-            - web
-        volumes: 
-            - ./VideoStreaming/:/usr/src/app/
+  nginx:
+    build: ./nginx_sites
+    ports:
+      - 8001:80
+    depends_on:
+      - web
+      - nodejs
+    volumes:
+      - ./VideoStreaming/:/usr/src/app/
+
+  nodejs:
+    build: ./nodejs_server
+    ports:
+      - 8081:8081
+    command: node stream_server.js
+    depends_on:
+      - web
+    volumes:
+      - ./VideoStreaming/media/videos/:/usr/src/media/videos/

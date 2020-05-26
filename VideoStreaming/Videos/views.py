@@ -46,3 +46,14 @@ class VideoViewSet(viewsets.ModelViewSet):
         return Response(self.serializer_class(video, context={
             'request': request
         }).data)
+
+    @action(detail=True, methods=["post"])
+    def stream(self, request, pk=None):
+
+        video = self.get_object()
+        video.add_dislike(request.user)
+        video.save()
+        return Response(self.serializer_class(video, context={
+            'request': request
+        }).data)
+
