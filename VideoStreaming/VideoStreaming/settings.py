@@ -179,7 +179,7 @@ background_task_logger_backup_count = 45
 
 DEFAULT_PROFILE_PIC = 'defaults/profile_pic.png'
 DEFAULT_CHANNEL_DP = 'defaults/channel_dp.jpg'
-DEFAULT_VIDEO_THUMBNAIL = 'defaults/video_thumbnail.png'
+DEFAULT_VIDEO_THUMBNAIL = 'defaults/video_thumbnail.jpg'
 
 
 LOGGING = {
