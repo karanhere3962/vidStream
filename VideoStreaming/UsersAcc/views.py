@@ -39,13 +39,15 @@ class UserViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=["post"])
     def set_password(self, request, pk=None):
+        print(dir(request._request))
+        print(request._request.build_absolute_uri("/api/videos/"))
         user = self.get_object()
         serializer = PasswordSerializer(user, data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
         return Response(serializer.data)
 
-    @action(detail=True, methods=["post"])
+    @action(detail=True, methods=["put"])
     def profile(self, request, pk=None):
         user = self.get_object()
         serializer = ProfileSerializer(user.userprofile, data=request.data)
