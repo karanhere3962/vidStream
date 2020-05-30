@@ -43,9 +43,9 @@ class kSM {
     localStorage.setItem(state_name, data);
   }
 
-  set_initial_state(stateObj) {
-    this.should_be_object(stateObj, "Initial State");
+  async set_initial_state(stateObj) {
     stateObj = stateObj || kSM.initialState;
+    this.should_be_object(stateObj, "Initial State");
     Object.assign(kSM.state, stateObj);
   }
 
@@ -65,6 +65,12 @@ class kSM {
     }
   }
 
+  should_be_this(obj) {
+    if (!obj || !obj.setState) {
+      throw "Required parameter 'this' not passed.";
+    }
+  }
+
   get_state(state) {
     if (!kSM.state[state]) {
       this.set_initial_state();
@@ -72,13 +78,13 @@ class kSM {
     return kSM.state[state];
   }
 
-  set_state(stateObj) {
+  async set_state(stateObj) {
     this.should_be_object(stateObj, "State");
     Object.assign(kSM.state, stateObj);
     this.update_subscribers(stateObj);
   }
 
-  update_subscribers(stateObj) {
+  async update_subscribers(stateObj) {
     this.should_be_object(stateObj, "State");
     let statekeys = Object.keys(stateObj);
     let currState, subscribedToState, currObj;
@@ -96,7 +102,7 @@ class kSM {
     }
   }
 
-  initializeObject(obj) {
+  initialize_object(obj) {
     if (!obj.kSMObject) {
       obj.kSMObject = {};
       Object.assign(obj.kSMObject, kSM.kSMObject);
@@ -107,14 +113,12 @@ class kSM {
     return obj;
   }
 
-  subscribe(states, obj) {
-    if (!obj) {
-      throw "'this' should be passed along with the state list.";
-    }
-
-    let currState;
-    obj = this.initializeObject(obj);
+  async subscribe(states, obj) {
+    this.should_be_this(obj);
     this.should_be_array(states, "State list");
+    obj = this.initialize_object(obj);
+    let currState,
+      statesToBeUpdated = {};
 
     for (let i = 0; i < states.length; i++) {
       currState = states[i];
@@ -122,10 +126,25 @@ class kSM {
 
       if (!obj.kSMObject.statesSubscribed[currState]) {
         obj.kSMObject.statesSubscribed[currState] = true;
-        obj.state[currState] = kSM.state[currState];
+        statesToBeUpdated[currState] = kSM.state[currState];
         kSM.subscribed[currState].push(obj);
       }
     }
+
+    Object.assign(obj.state, statesToBeUpdated);
+  }
+
+  async define_state(stateObj, obj) {
+    this.should_be_this(obj);
+    this.should_be_object(stateObj);
+    this.set_initial_state(stateObj);
+    this.subscribe(Object.keys(stateObj), obj);
+  }
+
+  async reset_state() {
+    kSM.state = {};
+    this.set_initial_state();
+    this.update_subscribers(kSM.state);
   }
 }
 

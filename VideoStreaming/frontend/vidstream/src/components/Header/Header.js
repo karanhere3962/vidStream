@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { stateManager } from "../../kStateManager";
+import "./Header.css";
 
 class Header extends Component {
   constructor(props) {
@@ -8,11 +9,7 @@ class Header extends Component {
   }
 
   render() {
-    console.log(`This is the state : ${JSON.stringify(this.state)}`);
-    if (this.state.isAuthenticated) {
-      return <div>User isAuthenticated.</div>;
-    }
-    return <div>User Not authenticated.</div>;
+    return <div className="header">this is some text</div>;
   }
 }
 

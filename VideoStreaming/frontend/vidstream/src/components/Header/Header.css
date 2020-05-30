@@ -1,0 +1,5 @@
+.header {
+  display: flex;
+  background-color: var(--prim-color);
+  width: 100%;
+}
