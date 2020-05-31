@@ -39,8 +39,6 @@ class UserViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=["post"])
     def set_password(self, request, pk=None):
-        print(dir(request._request))
-        print(request._request.build_absolute_uri("/api/videos/"))
         user = self.get_object()
         serializer = PasswordSerializer(user, data=request.data)
         if serializer.is_valid(raise_exception=True):

@@ -39,6 +39,7 @@ class Video(models.Model):
     video_thumbnail = models.ImageField(
         default=settings.DEFAULT_VIDEO_THUMBNAIL, upload_to='video_thumbnail')
     video = models.FileField(upload_to="videos")
+    viewed = models.ManyToManyField(settings.AUTH_USER_MODEL, name = "viewed", blank = True, related_name="viewed")
 
     objects = VideoManager()
 

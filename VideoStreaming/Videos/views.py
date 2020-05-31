@@ -5,6 +5,7 @@ from .serializers import *
 from .permissions import *
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from django.shortcuts import redirect
 
 
 # Create your views here.
@@ -47,13 +48,11 @@ class VideoViewSet(viewsets.ModelViewSet):
             'request': request
         }).data)
 
-    @action(detail=True, methods=["post"])
+    @action(detail=True, methods=["get"])
     def stream(self, request, pk=None):
 
         video = self.get_object()
-        video.add_dislike(request.user)
-        video.save()
-        return Response(self.serializer_class(video, context={
-            'request': request
-        }).data)
-
+        if request.user.is_authenticated:
+            video.viewed.add(request.user)
+        video_url = request._request.build_absolute_uri(video.video.url)
+        return redirect(video_url)

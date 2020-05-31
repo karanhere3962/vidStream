@@ -10,6 +10,7 @@ class VideoSerializer(serializers.ModelSerializer):
     likes = serializers.ReadOnlyField(source="likes_count")
     dislikes = serializers.ReadOnlyField(source="dislikes_count")
     video_id = serializers.CharField(min_length=1, required=False)
+    viewed = serializers.SerializerMethodField("viewStatus")
 
     class Meta:
         model = Video
@@ -28,3 +29,10 @@ class VideoSerializer(serializers.ModelSerializer):
 
     def likeDislikeField(self, obj):
         return obj.likeDislikeStatus(self.context["request"].user)
+
+    def viewStatus(self, obj):
+        user = self.context['request'].user
+        if obj.viewed.filter(pk=user.pk).exists():
+            return True
+        else:
+            return False

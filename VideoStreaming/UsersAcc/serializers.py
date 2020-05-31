@@ -36,7 +36,7 @@ class UserSerializer(serializers.ModelSerializer):
         if "password" in validated_data:
             raise serializers.ValidationError(
                 "Cannot reset password at this api endpoint.")
-        super().update(instance, validated_data)
+        return super().update(instance, validated_data)
 
 
 class PasswordSerializer(serializers.ModelSerializer):

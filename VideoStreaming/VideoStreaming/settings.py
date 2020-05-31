@@ -154,7 +154,7 @@ MIN_PASSWORD_LENGTH = 5
 SUPPORTED_VIDEO_FORMATS = ['.mp4', '.mov']
 
 
-logName = "server_logs"
+logName = "server_logs.log"
 logDir = os.path.join(BASE_DIR, "ServerLogs")
 
 apps_logging_path = os.path.join(logDir, f"AppLogs/{logName}")

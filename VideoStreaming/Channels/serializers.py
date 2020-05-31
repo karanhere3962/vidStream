@@ -10,6 +10,7 @@ class ChannelSerializer(serializers.ModelSerializer):
     owner = serializers.PrimaryKeyRelatedField(
         write_only=True, queryset=get_user_model().objects.all())
     channel_owner = serializers.ReadOnlyField(source="owner_email", )
+    channel_id = serializers.CharField(max_length=25, required=False)
     class Meta:
 
         model = Channel

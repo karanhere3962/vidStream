@@ -15,8 +15,8 @@ class ChannelViewSet(viewsets.ModelViewSet):
     permission_classes = (IsOwnerOrReadOnly,)
 
     def create(self, request):
-
-        data = {**request.data.dict(),
+        request_data = request.data if not request.data else request.data.dict()
+        data = {**request_data,
                 "owner": request.user.pk}
         print(data)
         serializer = self.serializer_class(data=data)
