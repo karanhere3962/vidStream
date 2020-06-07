@@ -1,0 +1,20 @@
+.primButton {
+  background: var(--prim-color);
+  height: 50px;
+  border: none;
+  color: var(--prim-text-color);
+  width: 80%;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 3px;
+}
+.tertButton {
+  background: var(--prim-text-color);
+  height: 50px;
+  border: 1px solid var(--sec-color);
+  color: var(--prim-color);
+  width: 100%;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 3px;
+}

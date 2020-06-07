@@ -18,8 +18,10 @@ services:
     depends_on:
       - web
       - nodejs
+      - reactjs
     volumes:
       - ./VideoStreaming/:/usr/src/app/
+      - ./vidstream/public/:/usr/src/app/static/
 
   nodejs:
     build: ./nodejs_server
@@ -30,3 +32,12 @@ services:
       - web
     volumes:
       - ./VideoStreaming/media/videos/:/usr/src/media/videos/
+
+  reactjs:
+    build: ./vidstream
+    ports:
+      - 3000:3000
+    command: npm start
+    stdin_open: true
+    volumes:
+      - ./vidstream/:/usr/app/

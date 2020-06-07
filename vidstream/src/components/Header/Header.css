@@ -1,0 +1,22 @@
+.header {
+  display: flex;
+  background-color: rgb(232, 232, 232);
+  width: 100%;
+  color: rgb(154, 154, 154);
+  font-size: 25px;
+  box-sizing: border-box;
+  padding: 10px;
+  height: 90px;
+  align-items: center;
+}
+.headerLogo {
+  margin-left: 2%;
+}
+.navLinks a {
+  margin-right: 20px;
+  text-decoration: none;
+}
+
+.navLinks a:hover {
+  color: rgb(117, 117, 117);
+}
