@@ -1,0 +1,13 @@
+.videoCardHolder {
+  min-width: 320px;
+  width: 7%;
+}
+.videoTitle {
+  font-size: 1.2em;
+  text-align: left;
+  font-weight: 500;
+  align-items: center;
+}
+.videoDetails {
+  font-size: 0.9em;
+}

@@ -1,58 +1,66 @@
-import React, { useState } from "react";
+import React, { Component } from "react";
 import FormGenerator from "../../components/FormGenerator/FormGenerator";
 import axios from "axios";
-import { useRecoilState, atom } from "recoil";
-import { user } from "../../atoms";
-import { useHistory } from "react-router-dom";
+import { connect } from "react-redux";
 
-const loginFormAtom = atom({
-  key: "loginForm",
-  default: {
-    email: "",
-    password: "",
-    errors: {
+const mapStateToProps = (state) => {
+  return {
+    state: state,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    login: (loginDetails) => dispatch(fetchUser(loginDetails)),
+  };
+};
+class Login extends Component {
+  constructor(props) {
+    super(props);
+    this.formId = "loginForm";
+    this.state = {
       email: "",
       password: "",
-    },
-    generalError: "",
-  },
-});
+      errors: {
+        email: "",
+        password: "",
+      },
+      generalError: "",
+    };
+  }
 
-function Login(props) {
-  const formId = "loginForm";
-  const history = useHistory();
-  const [FormState, setFormState] = useRecoilState(loginFormAtom);
-  const [userState, updateUser] = useRecoilState(user);
-  let formState = {};
-  Object.assign(formState, FormState);
-  const FormFields = [
-    {
-      label: "email-id",
-      type: "email",
-      required: "required",
-      name: "username",
-      error: formState.errors.email,
-      placeHolder: "Enter Your Email-id",
-      id: "email",
-    },
-    {
-      label: "Password",
-      type: "password",
-      required: "required",
-      minLength: "6",
-      name: "password",
-      errorText: formState.errors.password,
-      placeHolder: "Enter Your Password",
-      id: "password",
-    },
-  ];
-
-  const changeHandler = (event) => {
-    formState[event.target.name] = event.target.value;
-    setFormState(formState);
+  FormFields = () => {
+    return [
+      {
+        label: "email-id",
+        type: "email",
+        required: "required",
+        name: "username",
+        error: this.state.errors.email,
+        placeHolder: "Enter Your Email-id",
+        id: "email",
+      },
+      {
+        label: "Password",
+        type: "password",
+        required: "required",
+        minLength: "6",
+        name: "password",
+        errorText: this.state.errors.password,
+        placeHolder: "Enter Your Password",
+        id: "password",
+      },
+    ];
   };
 
-  const submitHandler = (event) => {
+  changeHandler = (event) => {
+    this.setState({
+      ...this.state,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  submitHandler = (event) => {
     let form = document.getElementById(formId);
     if (form.checkValidity && form.checkValidity()) {
       event.preventDefault();
@@ -91,21 +99,23 @@ function Login(props) {
         });
     }
   };
-  return (
-    <div className="d-flex flex-column justify-content-center">
-      <div className="text-danger col-4 mx-auto">
-        {formState.generalError !== "" ? formState.generalError : ""}
+  render() {
+    return (
+      <div className="d-flex flex-column justify-content-center">
+        <div className="text-danger col-4 mx-auto">
+          {this.state.generalError !== "" ? this.state.generalError : ""}
+        </div>
+        <FormGenerator
+          FormFields={this.FormFields()}
+          changeHandler={this.changeHandler}
+          submitHandler={this.submitHandler}
+          formId={this.formId}
+          submitLabel="Submit"
+          key="formGenerator"
+        />
       </div>
-      <FormGenerator
-        FormFields={FormFields}
-        changeHandler={changeHandler}
-        submitHandler={submitHandler}
-        formId={formId}
-        submitLabel="Submit"
-        key="formGenerator"
-      />
-    </div>
-  );
+    );
+  }
 }
 
-export default Login;
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
